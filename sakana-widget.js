@@ -37,7 +37,7 @@
         style.id = 'sakana-widget-style';
         style.textContent = `
             /* 右下角 - 千束 */
-            .chisato-box {
+            html .chisato-box {
                 position: fixed;
                 right: 0;
                 bottom: 0;
@@ -46,7 +46,7 @@
             }
             
             /* 左下角 - 泷奈 */
-            .takina-box {
+            html .takina-box {
                 position: fixed;
                 left: 0;
                 bottom: 0;
