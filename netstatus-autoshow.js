@@ -3,7 +3,7 @@
  * 🌐 网络状态自动显示模块
  * ============================================================
  * 作者: Zachary
- * GitHub: https://github.com/ZacharyLauGitHub
+ * GitHub: https://github.com/zacharylabs
  * 创建时间: 2025-12-19
  * ============================================================
  * 
@@ -13,7 +13,7 @@
  * - 强制同时显示两种视图 (列表 + 卡片)
  * 
  * 使用方法:
- * <script src="https://cdn.jsdelivr.net/gh/ZacharyLauGitHub/nezha-ui@main/netstatus-autoshow.js"></script>
+ * <script src="https://cdn.jsdelivr.net/gh/zacharylabs/nezha-ui@main/netstatus-autoshow.js"></script>
  * 
  * ============================================================
  */
