@@ -1,122 +1,109 @@
-/*!
- * 小星星拖尾特效 - Canvas 复刻版
- * 原版来源: static.mjbbs.com/xiaoxingxing.js
- * 优化: Canvas 渲染，效果与原版一致
- */
-(function (window, document) {
-    'use strict';
+/* 鼠标特效 - 小星星拖尾（原版） */
+(function fairyDustCursor() {
 
-    // 原版配置
-    const possibleColors = ["#D61C59", "#E7D84B", "#1B8798"];
-    const lifeSpan = 120;
-    const fontSize = 25;
-    const character = "*";
+    var possibleColors = ["#D61C59", "#E7D84B", "#1B8798"]
+    var width = window.innerWidth;
+    var height = window.innerHeight;
+    var cursor = { x: width / 2, y: width / 2 };
+    var particles = [];
 
-    let canvas, ctx;
-    let particles = [];
-    let animationId = null;
-    let width = window.innerWidth;
-    let height = window.innerHeight;
+    function init() {
+        // 创建容器
+        var container = document.createElement('div');
+        container.className = 'js-cursor-container';
+        document.body.appendChild(container);
 
-    class Particle {
-        constructor(x, y, color) {
-            this.x = x + 10;
-            this.y = y + 10;
-            this.vx = (Math.random() < 0.5 ? -1 : 1) * (Math.random() / 2);
-            this.vy = 1;
-            this.life = lifeSpan;
-            this.color = color;
-        }
-
-        update() {
-            this.x += this.vx;
-            this.y += this.vy;
-            this.life--;
-        }
-
-        draw(ctx) {
-            const scale = this.life / lifeSpan;
-            const size = fontSize * scale;
-
-            ctx.save();
-            ctx.fillStyle = this.color;
-            ctx.font = `${size}px serif`;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(character, this.x, this.y);
-            ctx.restore();
-        }
-
-        isDead() {
-            return this.life <= 0;
-        }
+        bindEvents();
+        loop();
     }
 
-    function initCanvas() {
-        canvas = document.createElement('canvas');
-        canvas.id = 'star-trail-canvas';
-        canvas.style.cssText = `
-            position: fixed;
-            left: 0;
-            top: 0;
-            pointer-events: none;
-            z-index: 10000000;
-        `;
-        document.body.appendChild(canvas);
-        ctx = canvas.getContext('2d');
-        resizeCanvas();
+    function bindEvents() {
+        document.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('resize', onWindowResize);
     }
 
-    function resizeCanvas() {
+    function onWindowResize(e) {
         width = window.innerWidth;
         height = window.innerHeight;
-        if (canvas) {
-            canvas.width = width;
-            canvas.height = height;
-        }
-    }
-
-    function addParticle(x, y) {
-        const color = possibleColors[Math.floor(Math.random() * possibleColors.length)];
-        particles.push(new Particle(x, y, color));
-    }
-
-    function loop() {
-        ctx.clearRect(0, 0, width, height);
-
-        for (let i = particles.length - 1; i >= 0; i--) {
-            particles[i].update();
-            particles[i].draw(ctx);
-            if (particles[i].isDead()) {
-                particles.splice(i, 1);
-            }
-        }
-
-        animationId = requestAnimationFrame(loop);
     }
 
     function onMouseMove(e) {
-        addParticle(e.clientX, e.clientY);
+        cursor.x = e.clientX;
+        cursor.y = e.clientY;
+        addParticle(cursor.x, cursor.y, possibleColors[Math.floor(Math.random() * possibleColors.length)]);
     }
 
-    function init() {
-        // 触屏设备不启用（原版逻辑）
-        if ('ontouchstart' in window || navigator.msMaxTouchPoints) {
-            return;
+    function addParticle(x, y, color) {
+        var particle = new Particle();
+        particle.init(x, y, color);
+        particles.push(particle);
+    }
+
+    function updateParticles() {
+        for (var i = 0; i < particles.length; i++) {
+            particles[i].update();
+        }
+        for (var i = particles.length - 1; i >= 0; i--) {
+            if (particles[i].lifeSpan < 0) {
+                particles[i].die();
+                particles.splice(i, 1);
+            }
+        }
+    }
+
+    function loop() {
+        requestAnimationFrame(loop);
+        updateParticles();
+    }
+
+    function Particle() {
+        this.character = "*";
+        this.lifeSpan = 120;
+        this.initialStyles = {
+            "position": "fixed",
+            "display": "inline-block",
+            "top": "0px",
+            "left": "0px",
+            "pointerEvents": "none",
+            "touch-action": "none",
+            "z-index": "10000000",
+            "fontSize": "25px",
+            "will-change": "transform"
+        };
+
+        this.init = function (x, y, color) {
+            this.velocity = {
+                x: (Math.random() < 0.5 ? -1 : 1) * (Math.random() / 2),
+                y: 1
+            };
+            this.position = { x: x + 10, y: y + 10 };
+            this.initialStyles.color = color;
+
+            this.element = document.createElement('span');
+            this.element.innerHTML = this.character;
+            applyProperties(this.element, this.initialStyles);
+            this.update();
+
+            document.querySelector('.js-cursor-container').appendChild(this.element);
+        };
+
+        this.update = function () {
+            this.position.x += this.velocity.x;
+            this.position.y += this.velocity.y;
+            this.lifeSpan--;
+            this.element.style.transform = "translate3d(" + this.position.x + "px," + this.position.y + "px, 0) scale(" + (this.lifeSpan / 120) + ")";
         }
 
-        initCanvas();
-        document.addEventListener('mousemove', onMouseMove);
-        window.addEventListener('resize', resizeCanvas);
-        loop();
-
-        console.log('[Nezha UI] ✓ 星星拖尾特效加载完成');
+        this.die = function () {
+            this.element.parentNode.removeChild(this.element);
+        }
     }
 
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-    } else {
-        init();
+    function applyProperties(target, properties) {
+        for (var key in properties) {
+            target.style[key] = properties[key];
+        }
     }
 
-})(window, document);
+    if (!('ontouchstart' in window || navigator.msMaxTouchPoints)) init();
+})();
