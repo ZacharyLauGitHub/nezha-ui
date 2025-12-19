@@ -8,9 +8,14 @@
     var particles = [];
 
     function init() {
-        bindEvents();
-        loop();
-    }
+    // 自动创建容器
+    var container = document.createElement('div');
+    container.className = 'js-cursor-container';
+    document.body.appendChild(container);
+    
+    bindEvents();
+    loop();
+}
 
     // Bind events that are needed
     function bindEvents() {
