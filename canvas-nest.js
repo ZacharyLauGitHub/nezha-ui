@@ -1,16 +1,7 @@
 /**
  * Canvas Nest - 蜘蛛网粒子动画效果
  * 性能优化版 - 适用于背景装饰
- * 包含主题自动适配功能
- * 
- * 配置说明:
- * - count: 粒子数量 (建议: 50-150)
- * - color: RGB颜色值 '255,255,255'
- * - opacity: 透明度 (0-1)
- * - zIndex: 层级 (建议: -1 或 1)
- * - maxDistance: 最大连线距离
  */
-
 (function () {
     'use strict';
 
