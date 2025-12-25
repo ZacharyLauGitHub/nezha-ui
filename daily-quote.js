@@ -1,6 +1,6 @@
 /**
  * Daily Quote Widget - 每日名言挂件
- * 性能优化版 v2.0
+ * 性能优化版 v2.1
  * 
  * 特性：
  * - 中英文名言随机显示
@@ -13,6 +13,7 @@
  * - 使用 matchMedia 响应屏幕变化
  * - 修复定时器逻辑缺陷
  * - 添加资源清理机制
+ * - v2.1: 修复 passive 事件监听支持
  */
 
 (function () {
@@ -151,14 +152,14 @@
         addTimer(id) {
             this.timers.push(id);
         },
-        addListener(element, event, handler) {
-            this.listeners.push({ element, event, handler });
-            element.addEventListener(event, handler);
+        addListener(element, event, handler, options) {
+            this.listeners.push({ element, event, handler, options });
+            element.addEventListener(event, handler, options);
         },
         destroy() {
             this.timers.forEach(id => clearTimeout(id));
-            this.listeners.forEach(({ element, event, handler }) => {
-                element.removeEventListener(event, handler);
+            this.listeners.forEach(({ element, event, handler, options }) => {
+                element.removeEventListener(event, handler, options);
             });
             if (this.observer) {
                 this.observer.disconnect();
@@ -368,7 +369,7 @@
     // 初始化
     handleScreenChange(mobileQuery);
 
-    console.log('[Daily Quote] 每日名言加载完成 ✨ (优化版 v2.0)');
+    console.log('[Daily Quote] 每日名言加载完成 ✨ (优化版 v2.1)');
 
     // 开发环境：暴露清理函数（可选）
     if (typeof window !== 'undefined') {
