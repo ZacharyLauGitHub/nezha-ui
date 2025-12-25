@@ -133,6 +133,10 @@
 
             if (globeInstance && globeInstance.resumeAnimation) {
                 globeInstance.resumeAnimation();
+                // 恢复自动旋转
+                if (globeInstance.controls) {
+                    globeInstance.controls().autoRotate = true;
+                }
             }
 
             if (updateTimer) clearInterval(updateTimer);
