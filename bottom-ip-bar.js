@@ -27,7 +27,12 @@
             <span class="divider">|</span>
             <span id="ip-asn">--</span>
         </div>
-        <div class="ip-icon-collapsed">📍</div>
+        <div class="ip-icon-collapsed">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                <circle cx="12" cy="10" r="3"/>
+            </svg>
+        </div>
     `;
 
     // ========== CSS 样式 ==========
@@ -88,8 +93,11 @@
         
         #ip-glass-bar .ip-icon-collapsed {
             display: none;
-            font-size: 20px;
-            line-height: 1;
+        }
+        
+        #ip-glass-bar .ip-icon-collapsed svg {
+            width: 32px;
+            height: 32px;
         }
         
         #ip-glass-bar .ip-dot {
@@ -121,9 +129,15 @@
         #ip-glass-bar.collapsed {
             left: auto;
             right: 20px;
+            bottom: 180px;
             transform: none;
-            padding: 12px;
+            width: 46px;
+            height: 46px;
+            padding: 0;
             border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         #ip-glass-bar.collapsed .ip-content {
@@ -205,12 +219,14 @@
                 transform: translateX(-50%) translateY(-2px) scale(1.02);
             }
             #ip-glass-bar.collapsed {
-                padding: 10px;
+                width: 40px;
+                height: 40px;
                 right: 15px;
-                bottom: 15px;
+                bottom: 160px;
             }
-            #ip-glass-bar .ip-icon-collapsed {
-                font-size: 16px;
+            #ip-glass-bar .ip-icon-collapsed svg {
+                width: 22px;
+                height: 22px;
             }
         }
         
