@@ -86,7 +86,7 @@ html.dark .finance-ball:hover {
 .finance-widget {
     position: fixed;
     right: 20px;
-    top: 70px;
+    top: 130px;
     z-index: 1040;
     width: 320px;
     border-radius: 16px;
