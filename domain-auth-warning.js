@@ -12,34 +12,35 @@
   'use strict';
 
   // ========== 配置项 ==========
+  // 从 window.DomainAuthConfig 读取外部配置（在 NezhaUI.html 中设置）
+  const userConfig = window.DomainAuthConfig || {};
+
   const CONFIG = {
     // 允许的域名列表 (支持完整域名和通配符)
-    allowedDomains: [
+    allowedDomains: userConfig.allowedDomains || [
       'localhost',
       '127.0.0.1',
-      'vps.thesecondbrain.de',
-      'vps.zacharylabs.com',
-      // 添加更多允许的域名...
+      // 用户在 NezhaUI.html 中配置自己的域名
     ],
 
     // 是否启用域名检查
-    enableCheck: true,
+    enableCheck: userConfig.enableCheck !== false,
 
     // 警告框样式
     warning: {
-      title: '⚠️ 未授权访问提示',
-      message: '检测到此页面未在授权域名上运行。<br>如需正常访问，请访问官方网站。',
-      buttonText: '我知道了',
-      officialUrl: 'https://vps.thesecondbrain.de', // 官方网站地址
-      linkText: '前往官方网站'
+      title: userConfig.title || '⚠️ 未授权访问提示',
+      message: userConfig.message || '检测到此页面未在授权域名上运行。<br>如需正常访问，请访问官方网站。',
+      buttonText: userConfig.buttonText || '我知道了',
+      officialUrl: userConfig.officialUrl || '', // 用户配置
+      linkText: userConfig.linkText || '前往官方网站'
     },
 
     // 视觉效果配置
     effects: {
-      enableBlink: true,      // 是否启用闪烁效果
-      enableShake: false,     // 是否启用抖动效果
-      blinkSpeed: 3,          // 闪烁速度(秒)
-      shakeIntensity: 5       // 抖动强度(像素)
+      enableBlink: userConfig.enableBlink !== false,
+      enableShake: userConfig.enableShake || false,
+      blinkSpeed: userConfig.blinkSpeed || 3,
+      shakeIntensity: userConfig.shakeIntensity || 5
     }
   };
 
