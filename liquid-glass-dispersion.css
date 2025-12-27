@@ -1,0 +1,794 @@
+/**
+ * ============================================================
+ * 🎨 NezhaUI - Liquid Glass CSS (色散版)
+ * ============================================================
+ * 版本: v2.2.0
+ * 作者: Zachary
+ * GitHub: https://github.com/zacharylabs/nezha-ui
+ * 描述: iOS 26 液态玻璃风格 + 青色/洋红色散光晕
+ * ============================================================
+ */
+
+/* ========== 字体配置 - DouyinSans ========== */
+body,
+div,
+p,
+span,
+button,
+input,
+textarea,
+select,
+* {
+    font-family: "DouyinSans", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif !important;
+    font-weight: 400 !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+strong,
+b {
+    font-weight: 700 !important;
+}
+
+[class*="number"],
+[class*="stat"],
+.text-xl,
+.text-2xl,
+.text-3xl,
+.text-4xl,
+[class*="font-semibold"],
+[class*="font-bold"] {
+    font-weight: 700 !important;
+}
+
+/* ========== 亮色主题 CSS 变量 ========== */
+:root {
+    /* 主色调 */
+    --glass-bg: rgba(255, 255, 255, 0.6);
+    --glass-bg-hover: rgba(255, 255, 255, 0.75);
+    --glass-border: rgba(255, 255, 255, 0.5);
+    --glass-border-inner: rgba(255, 255, 255, 0.8);
+
+    /* 文字颜色 */
+    --text-primary: rgba(0, 0, 0, 0.85);
+    --text-secondary: rgba(0, 0, 0, 0.55);
+    --text-tertiary: rgba(0, 0, 0, 0.35);
+
+    /* 阴影 */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.05);
+    --shadow-inner: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+
+    /* 模糊 */
+    --blur-amount: 24px;
+    --blur-saturate: 180%;
+
+    /* 圆角 */
+    --radius-sm: 12px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-xl: 32px;
+
+    /* 过渡 */
+    --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* 强调色 */
+    --accent-blue: rgba(0, 122, 255, 0.9);
+    --accent-green: rgba(52, 199, 89, 0.9);
+    --accent-orange: rgba(255, 149, 0, 0.9);
+    --accent-red: rgba(255, 59, 48, 0.9);
+    --accent-purple: rgba(175, 82, 222, 0.9);
+}
+
+/* ========== 暗色主题 CSS 变量 ========== */
+.dark,
+[data-theme="dark"] {
+    color-scheme: dark;
+
+    --glass-bg: rgba(28, 28, 30, 0.65);
+    --glass-bg-hover: rgba(44, 44, 46, 0.75);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --glass-border-inner: rgba(255, 255, 255, 0.06);
+
+    --text-primary: rgba(255, 255, 255, 0.92);
+    --text-secondary: rgba(255, 255, 255, 0.6);
+    --text-tertiary: rgba(255, 255, 255, 0.4);
+
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.35), 0 1px 3px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.45), 0 2px 6px rgba(0, 0, 0, 0.25);
+    --shadow-inner: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* 系统暗色模式自动检测 */
+@media (prefers-color-scheme: dark) {
+    :root:not(.light):not([data-theme="light"]) {
+        --glass-bg: rgba(28, 28, 30, 0.65);
+        --glass-bg-hover: rgba(44, 44, 46, 0.75);
+        --glass-border: rgba(255, 255, 255, 0.12);
+        --glass-border-inner: rgba(255, 255, 255, 0.06);
+        --text-primary: rgba(255, 255, 255, 0.92);
+        --text-secondary: rgba(255, 255, 255, 0.6);
+        --text-tertiary: rgba(255, 255, 255, 0.4);
+        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+        --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.35), 0 1px 3px rgba(0, 0, 0, 0.2);
+        --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.45), 0 2px 6px rgba(0, 0, 0, 0.25);
+        --shadow-inner: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+}
+
+/* 全局样式 */
+body {
+    color: var(--text-primary);
+}
+
+/* 背景透明化 */
+.bg-stone-700,
+.bg-stone-800,
+.bg-secondary,
+.bg-popover,
+.bg-muted {
+    background-color: var(--glass-bg) !important;
+}
+
+/* 文字颜色 */
+.text-muted-foreground {
+    color: var(--text-secondary) !important;
+}
+
+/* ========== 下拉菜单液态玻璃效果 (色散版) ========== */
+div.bg-popover:has([role="menuitem"]),
+div.bg-popover:has([role="option"]),
+div.bg-popover:not([data-radix-popper-content-wrapper]):not([cmdk-root]) {
+    background: transparent linear-gradient(135deg,
+            rgba(255, 255, 255, 0.2) 0%,
+            rgba(255, 255, 255, 0.01) 50%,
+            rgba(255, 255, 255, 0.1) 100%) !important;
+    backdrop-filter: blur(8px) saturate(200%) contrast(1.1) !important;
+    -webkit-backdrop-filter: blur(8px) saturate(200%) contrast(1.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.6) !important;
+    border-radius: var(--radius-md) !important;
+    /* 色散光晕 */
+    box-shadow:
+        inset 3px 0 6px rgba(0, 255, 255, 0.4),
+        inset -3px 0 6px rgba(255, 0, 255, 0.3),
+        inset 0 2px 4px rgba(255, 255, 255, 0.8),
+        0 12px 40px rgba(0, 0, 0, 0.08) !important;
+    padding: 4px !important;
+}
+
+/* 下拉菜单项 */
+div.bg-popover [role="menuitem"],
+div.bg-popover [role="option"] {
+    background: transparent !important;
+    border-radius: var(--radius-sm) !important;
+    transition: all var(--transition-base) !important;
+    color: var(--text-primary) !important;
+    padding: 8px 12px !important;
+    margin: 2px 0 !important;
+}
+
+/* 下拉菜单项 hover */
+div.bg-popover [role="menuitem"]:hover,
+div.bg-popover [role="option"]:hover {
+    background: rgba(255, 255, 255, .3) !important;
+    transform: translateX(2px);
+}
+
+/* 下拉菜单项选中状态 */
+div.bg-popover [role="menuitem"][data-state="checked"],
+div.bg-popover [role="option"][aria-selected="true"] {
+    background: rgba(0, 122, 255, .15) !important;
+    color: var(--accent-blue) !important;
+    font-weight: 600 !important;
+}
+
+/* 暗色模式下拉框 (色散版) */
+html.dark div.bg-popover:has([role="menuitem"]),
+html.dark div.bg-popover:has([role="option"]),
+html.dark div.bg-popover:not([data-radix-popper-content-wrapper]):not([cmdk-root]) {
+    background: linear-gradient(135deg,
+            rgba(0, 0, 0, 0.2) 0%,
+            rgba(0, 0, 0, 0.01) 50%,
+            rgba(0, 0, 0, 0.1) 100%) !important;
+    backdrop-filter: blur(8px) saturate(200%) contrast(1.1) !important;
+    -webkit-backdrop-filter: blur(8px) saturate(200%) contrast(1.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.25) !important;
+    /* 色散光晕 */
+    box-shadow:
+        inset 3px 0 6px rgba(0, 255, 255, 0.4),
+        inset -3px 0 6px rgba(255, 0, 255, 0.3),
+        inset 0 2px 4px rgba(255, 255, 255, 0.15),
+        0 12px 40px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* 暗色模式菜单项 hover */
+html.dark div.bg-popover [role="menuitem"]:hover,
+html.dark div.bg-popover [role="option"]:hover {
+    background: rgba(255, 255, 255, .1) !important;
+}
+
+/* 暗色模式菜单项选中 */
+html.dark div.bg-popover [role="menuitem"][data-state="checked"],
+html.dark div.bg-popover [role="option"][aria-selected="true"] {
+    background: rgba(0, 122, 255, .2) !important;
+    color: #60a5fa !important;
+}
+
+/* 边框样式 */
+.border-input,
+[class*="border-neutral"],
+.border-border,
+.border-b,
+[class*="border-"] {
+    border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* 暗色模式边框 */
+html.dark .border-b,
+html.dark [class*="border-"] {
+    border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* 输入框液态玻璃（排除命令面板搜索框） */
+input:not([cmdk-input]),
+textarea,
+select {
+    background-color: var(--glass-bg) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: var(--radius-sm) !important;
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    transition: all var(--transition-base);
+}
+
+/* 普通输入框focus状态 */
+input:not([cmdk-input]):focus,
+textarea:focus,
+select:focus {
+    border-color: var(--accent-blue) !important;
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+    outline: none;
+}
+
+/* 命令面板搜索框恢复原始样式 */
+input[cmdk-input] {
+    background-color: transparent !important;
+    border: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+input[cmdk-input]:focus {
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* 命令面板输入wrapper背景色 */
+div[cmdk-input-wrapper],
+div[cmdk-input-wrapper].bg-stone-100 {
+    background-color: transparent !important;
+}
+
+html.dark div[cmdk-input-wrapper],
+html.dark div[cmdk-input-wrapper].bg-stone-900 {
+    background-color: transparent !important;
+}
+
+/* 滚动条美化 */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--glass-border);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-tertiary);
+}
+
+/* ============================================================
+   玻璃效果 - 核心样式 (色散版)
+   ============================================================ */
+
+/* ========== 亮色模式 ========== */
+/* 核心玻璃容器 - 色散效果 */
+.bg-card,
+div[class*="bg-card/70"],
+section[class*="bg-card/"]:has(svg) {
+    background-color: transparent !important;
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.01) 50%, rgba(255, 255, 255, 0.1) 100%) !important;
+    backdrop-filter: blur(8px) saturate(200%) contrast(1.1) !important;
+    -webkit-backdrop-filter: blur(8px) saturate(200%) contrast(1.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.6) !important;
+    /* 强力色散光晕 */
+    box-shadow:
+        inset 3px 0 6px rgba(0, 255, 255, 0.4),
+        inset -3px 0 6px rgba(255, 0, 255, 0.3),
+        inset 0 2px 4px rgba(255, 255, 255, 0.8),
+        0 12px 40px rgba(0, 0, 0, 0.08) !important;
+    transition: all .3s ease-out !important;
+}
+
+.bg-card:hover,
+div[class*="bg-card/70"]:hover,
+section[class*="bg-card/"]:has(svg):hover {
+    transform: translateY(-5px) scale(1.015) !important;
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0.2) 100%) !important;
+    backdrop-filter: blur(10px) saturate(220%) contrast(1.2) !important;
+    -webkit-backdrop-filter: blur(10px) saturate(220%) contrast(1.2) !important;
+    border-color: rgba(255, 255, 255, 0.8) !important;
+    /* 悬停时色散范围扩大 */
+    box-shadow:
+        inset 4px 0 8px rgba(0, 255, 255, 0.5),
+        inset -4px 0 8px rgba(255, 0, 255, 0.4),
+        inset 0 2px 6px rgba(255, 255, 255, 0.9),
+        0 20px 50px -10px rgba(0, 0, 0, 0.15) !important;
+    z-index: 10 !important;
+}
+
+/* 顶部按钮 + 工具栏按钮 - 色散效果 (较弱版) */
+section.header-handles button,
+button.bg-white.dark\:bg-stone-800:not([class*="bg-blue-600"]),
+button[class*="rounded-[50px]"]:not([class*="bg-blue-600"]) {
+    background: transparent linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.01) 50%, rgba(255, 255, 255, 0.1) 100%) !important;
+    backdrop-filter: blur(6px) saturate(180%) contrast(1.05) !important;
+    -webkit-backdrop-filter: blur(6px) saturate(180%) contrast(1.05) !important;
+    border: 1px solid rgba(255, 255, 255, .5) !important;
+    /* 色散光晕 - 较弱版 */
+    box-shadow:
+        inset 2px 0 4px rgba(0, 255, 255, 0.2),
+        inset -2px 0 4px rgba(255, 0, 255, 0.15),
+        inset 0 1px 2px rgba(255, 255, 255, 0.6),
+        0 4px 10px rgba(0, 0, 0, 0.05) !important;
+    border-radius: 999px !important;
+    transition: all .3s ease !important;
+}
+
+section.header-handles button:hover,
+button.bg-white.dark\:bg-stone-800:not([class*="bg-blue-600"]):hover,
+button[class*="rounded-[50px]"]:not([class*="bg-blue-600"]):hover {
+    transform: translateY(-2px) scale(1.05) !important;
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0.2) 100%) !important;
+    backdrop-filter: blur(8px) saturate(200%) contrast(1.1) !important;
+    -webkit-backdrop-filter: blur(8px) saturate(200%) contrast(1.1) !important;
+    border-color: rgba(255, 255, 255, .8) !important;
+    /* 悬停时色散增强 */
+    box-shadow:
+        inset 3px 0 6px rgba(0, 255, 255, 0.3),
+        inset -3px 0 6px rgba(255, 0, 255, 0.25),
+        inset 0 1px 3px rgba(255, 255, 255, 0.8),
+        0 8px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* 重置header中的logo图片样式 */
+.header-top img,
+section.header-handles img {
+    border: none !important;
+    background: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* ========== 顶部按钮尺寸与排布 ========== */
+section.header-handles button {
+    height: 36px !important;
+}
+
+/* 圆形图标按钮 */
+section.header-handles button.cursor-pointer {
+    width: 36px !important;
+    padding: 0 !important;
+}
+
+/* 文字按钮 */
+section.header-handles button.cursor-default {
+    width: auto !important;
+    padding: 0 14px !important;
+}
+
+/* 按钮内文字和图标样式 */
+section.header-handles button svg,
+section.header-handles button.cursor-default p,
+section.header-handles button.cursor-default .text-muted-foreground,
+button[class*="rounded-[50px]"]:not([class*="bg-blue-600"]) svg,
+button.bg-white.dark\:bg-stone-800:not([class*="bg-blue-600"]) svg,
+div[class*="bg-stone-100/70"] p {
+    color: #1e293b !important;
+    font-weight: 600 !important;
+}
+
+/* 文字按钮特定样式 */
+section.header-handles button.cursor-default p,
+section.header-handles button.cursor-default .text-muted-foreground {
+    opacity: 1 !important;
+    margin: 0 2px !important;
+}
+
+/* 亮色模式卡片文字增强 */
+.bg-card h3,
+.bg-card p:not([class*="text-blue"]):not([class*="text-purple"]):not([class*="text-green"]),
+.bg-card label {
+    color: #0f172a !important;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, .8),
+        0 0 1px rgba(255, 255, 255, .5) !important;
+    font-weight: 600 !important;
+}
+
+section.header-handles button svg {
+    filter: none !important;
+}
+
+/* All 按钮容器 */
+:not(.dark) div[class*="bg-stone-100/70"] {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border: 1px solid rgba(255, 255, 255, .2) !important;
+    box-shadow: none !important;
+    border-radius: 50px !important;
+}
+
+/* All 按钮内部滑块 - 色散效果 */
+div[class*="bg-stone-100/70"] .absolute.inset-0 {
+    background: transparent linear-gradient(135deg, rgba(255, 255, 255, .45) 0%, rgba(255, 255, 255, .1) 40%, rgba(255, 255, 255, .05) 60%, rgba(255, 255, 255, .25) 100%) !important;
+    backdrop-filter: blur(6px) saturate(180%) contrast(1.05) !important;
+    -webkit-backdrop-filter: blur(6px) saturate(180%) contrast(1.05) !important;
+    border: 1px solid rgba(255, 255, 255, .5) !important;
+    /* 色散光晕 */
+    box-shadow:
+        inset 2px 0 4px rgba(0, 255, 255, 0.2),
+        inset -2px 0 4px rgba(255, 0, 255, 0.15),
+        inset 0 1px 2px rgba(255, 255, 255, 0.6),
+        0 4px 10px rgba(0, 0, 0, .05) !important;
+    border-radius: 999px !important;
+    transition: all .3s ease !important;
+}
+
+/* ========== 登录链接强化样式 ========== */
+.header-top a {
+    color: #1e293b !important;
+    opacity: 1 !important;
+    font-weight: 700 !important;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, .5) !important;
+    transition: all .3s ease;
+}
+
+.header-top a:hover {
+    color: #0f172a !important;
+    text-shadow: 0 0 8px rgba(255, 255, 255, .9),
+        0 2px 4px rgba(255, 255, 255, .6) !important;
+    transform: scale(1.05);
+}
+
+/* 暗色模式登录链接 */
+html.dark .header-top a {
+    color: #fff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, .6) !important;
+}
+
+html.dark .header-top a:hover {
+    text-shadow: 0 0 12px rgba(255, 255, 255, .9),
+        0 1px 3px rgba(0, 0, 0, .8) !important;
+}
+
+/* 流量方块 */
+.bg-secondary:not([role="progressbar"]),
+div.inline-flex.text-foreground[class*="rounded-[8px]"] {
+    background: transparent linear-gradient(135deg, rgba(255, 255, 255, .25) 0%, rgba(255, 255, 255, .08) 50%, rgba(255, 255, 255, .12) 100%) !important;
+    backdrop-filter: blur(6px) !important;
+    -webkit-backdrop-filter: blur(6px) !important;
+    border: 1px solid rgba(255, 255, 255, .35) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .08), inset 0 1px 1px rgba(255, 255, 255, .4) !important;
+    color: #1e293b !important;
+    font-weight: 600 !important;
+    transition: all .3s ease !important;
+}
+
+.bg-secondary:not([role="progressbar"]):hover,
+div.inline-flex.text-foreground[class*="rounded-[8px]"]:hover {
+    transform: translateY(-2px) scale(1.02) !important;
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, .35) 0%, rgba(255, 255, 255, .12) 50%, rgba(255, 255, 255, .2) 100%) !important;
+    border-color: rgba(255, 255, 255, .5) !important;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, .1), inset 0 1px 2px rgba(255, 255, 255, .5) !important;
+}
+
+/* ========== 暗色模式 (色散版) ========== */
+html.dark .bg-card,
+html.dark div[class*="bg-card/70"],
+html.dark section[class*="bg-card/"]:has(svg) {
+    background-color: transparent !important;
+    background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.01) 50%, rgba(0, 0, 0, 0.1) 100%) !important;
+    backdrop-filter: blur(8px) saturate(200%) contrast(1.1) !important;
+    -webkit-backdrop-filter: blur(8px) saturate(200%) contrast(1.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.25) !important;
+    /* 强力色散光晕 */
+    box-shadow:
+        inset 3px 0 6px rgba(0, 255, 255, 0.4),
+        inset -3px 0 6px rgba(255, 0, 255, 0.3),
+        inset 0 2px 4px rgba(255, 255, 255, 0.15),
+        0 12px 40px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark .bg-card:hover,
+html.dark div[class*="bg-card/70"]:hover,
+html.dark section[class*="bg-card/"]:has(svg):hover {
+    transform: translateY(-5px) scale(1.015) !important;
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 50%, rgba(255, 255, 255, 0.08) 100%) !important;
+    backdrop-filter: blur(10px) saturate(220%) contrast(1.2) !important;
+    -webkit-backdrop-filter: blur(10px) saturate(220%) contrast(1.2) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    /* 悬停时色散范围扩大 */
+    box-shadow:
+        inset 4px 0 8px rgba(0, 255, 255, 0.5),
+        inset -4px 0 8px rgba(255, 0, 255, 0.4),
+        inset 0 2px 6px rgba(255, 255, 255, 0.2),
+        0 20px 50px -10px rgba(0, 0, 0, 0.5) !important;
+    z-index: 10 !important;
+}
+
+html.dark section.header-handles button,
+html.dark button.bg-white.dark\:bg-stone-800:not([class*="bg-blue-600"]),
+html.dark button[class*="rounded-[50px]"]:not([class*="bg-blue-600"]),
+html.dark div[class*="bg-stone-100/70"] {
+    background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.01) 50%, rgba(0, 0, 0, 0.1) 100%) !important;
+    backdrop-filter: blur(6px) saturate(180%) contrast(1.05) !important;
+    -webkit-backdrop-filter: blur(6px) saturate(180%) contrast(1.05) !important;
+    border: 1px solid rgba(255, 255, 255, .15) !important;
+    /* 暗色模式色散光晕 */
+    box-shadow:
+        inset 2px 0 4px rgba(0, 255, 255, 0.2),
+        inset -2px 0 4px rgba(255, 0, 255, 0.15),
+        inset 0 1px 2px rgba(255, 255, 255, 0.1),
+        0 4px 10px rgba(0, 0, 0, 0.2) !important;
+}
+
+html.dark section.header-handles button:hover,
+html.dark button.bg-white.dark\:bg-stone-800:not([class*="bg-blue-600"]):hover,
+html.dark button[class*="rounded-[50px]"]:not([class*="bg-blue-600"]):hover,
+html.dark div[class*="bg-stone-100/70"]:hover {
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 50%, rgba(255, 255, 255, 0.08) 100%) !important;
+    backdrop-filter: blur(8px) saturate(200%) contrast(1.1) !important;
+    -webkit-backdrop-filter: blur(8px) saturate(200%) contrast(1.1) !important;
+    border-color: rgba(255, 255, 255, .3) !important;
+    /* 悬停时色散增强 */
+    box-shadow:
+        inset 3px 0 6px rgba(0, 255, 255, 0.3),
+        inset -3px 0 6px rgba(255, 0, 255, 0.25),
+        inset 0 1px 3px rgba(255, 255, 255, 0.15),
+        0 8px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark div[class*="bg-stone-100/70"] .absolute.inset-0 {
+    background: transparent linear-gradient(170deg, rgba(255, 255, 255, .15) 0%, rgba(255, 255, 255, .05) 40%, rgba(255, 255, 255, .05) 60%, rgba(255, 255, 255, .1) 100%) !important;
+    backdrop-filter: blur(6px) saturate(180%) contrast(1.05) !important;
+    -webkit-backdrop-filter: blur(6px) saturate(180%) contrast(1.05) !important;
+    border: 1px solid rgba(255, 255, 255, .15) !important;
+    /* 色散光晕 */
+    box-shadow:
+        inset 2px 0 4px rgba(0, 255, 255, 0.2),
+        inset -2px 0 4px rgba(255, 0, 255, 0.15),
+        inset 0 1px 2px rgba(255, 255, 255, 0.1),
+        0 4px 12px rgba(0, 0, 0, .5) !important;
+}
+
+/* 暗色文字 */
+html.dark section.header-handles button svg,
+html.dark section.header-handles button.cursor-default p,
+html.dark button.bg-white.dark\:bg-stone-800:not([class*="bg-blue-600"]) svg,
+html.dark button[class*="rounded-[50px]"]:not([class*="bg-blue-600"]) svg,
+html.dark div[class*="bg-stone-100/70"] p,
+html.dark div[class*="bg-card/70"] *:not([class*="text-blue"]):not([class*="text-purple"]):not([class*="text-green"]):not([class*="text-red"]):not([class*="text-orange"]):not([class*="text-yellow"]),
+html.dark .bg-card *:not([class*="text-blue"]):not([class*="text-purple"]):not([class*="text-green"]):not([class*="text-red"]):not([class*="text-orange"]):not([class*="text-yellow"]) {
+    color: #fff !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, .9) !important;
+}
+
+/* 流量方块 - 暗色 */
+html.dark .bg-secondary:not([role="progressbar"]),
+html.dark div.inline-flex.text-foreground[class*="rounded-[8px]"] {
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, .12) 0%, rgba(255, 255, 255, .04) 50%, rgba(255, 255, 255, .08) 100%) !important;
+    backdrop-filter: blur(8px) !important;
+    border: 1px solid rgba(255, 255, 255, .15) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .3), inset 0 1px 1px rgba(255, 255, 255, .2) !important;
+    color: #fff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, .8) !important;
+}
+
+/* 图表区域 */
+.recharts-surface,
+.recharts-wrapper {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-radius: var(--radius-sm);
+}
+
+/* 进度条 */
+.bg-card [role="progressbar"],
+.bg-card progress {
+    background: rgba(0, 0, 0, 0.08) !important;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.dark .bg-card [role="progressbar"],
+.dark .bg-card progress {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+    .bg-card {
+        border-radius: var(--radius-sm) !important;
+    }
+
+    .bg-card:hover {
+        transform: none;
+    }
+}
+
+/* ============================================================
+   ✨ 动画样式 - iOS 26 流畅动效
+   ============================================================ */
+
+/* 淡入上滑动画 */
+@keyframes glass-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(16px) scale(0.98);
+        filter: blur(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+}
+
+/* 应用动画到卡片 */
+.bg-card {
+    animation: glass-fade-in 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* 错开动画 */
+.bg-card:nth-child(1) {
+    animation-delay: 0ms;
+}
+
+.bg-card:nth-child(2) {
+    animation-delay: 50ms;
+}
+
+.bg-card:nth-child(3) {
+    animation-delay: 100ms;
+}
+
+.bg-card:nth-child(4) {
+    animation-delay: 150ms;
+}
+
+.bg-card:nth-child(5) {
+    animation-delay: 200ms;
+}
+
+.bg-card:nth-child(6) {
+    animation-delay: 250ms;
+}
+
+.bg-card:nth-child(7) {
+    animation-delay: 300ms;
+}
+
+.bg-card:nth-child(8) {
+    animation-delay: 350ms;
+}
+
+.bg-card:nth-child(9) {
+    animation-delay: 400ms;
+}
+
+.bg-card:nth-child(10) {
+    animation-delay: 450ms;
+}
+
+/* 平滑过渡 - 全局 */
+* {
+    transition-property: background-color, border-color, color, opacity, box-shadow;
+    transition-duration: var(--transition-fast);
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 链接/按钮悬停 */
+a,
+button,
+[role="button"] {
+    transition: all var(--transition-base) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+a:hover,
+button:hover,
+[role="button"]:hover {
+    filter: brightness(1.1);
+}
+
+a:active,
+button:active,
+[role="button"]:active {
+    transform: scale(0.97);
+    filter: brightness(0.95);
+}
+
+/* 禁用动画（无障碍）*/
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .bg-card {
+        animation: none !important;
+    }
+
+    .bg-card:hover {
+        transform: none !important;
+    }
+}
+
+/* 性能优化 */
+.bg-card,
+[class*="animate"] {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* ============================================================
+   自定义插图样式
+   ============================================================ */
+img[src*="CustomIllustration"],
+img[src*="IXGoHGfuLJL0pyx4GxmNvGltPdbV5USV"] {
+    position: absolute !important;
+    right: -40px !important;
+    top: -125px !important;
+    width: 130px !important;
+    height: auto !important;
+    z-index: 12 !important;
+    max-width: none !important;
+    pointer-events: none !important;
+}
+
+/* 响应式：移动端调整 */
+@media (max-width: 768px) {
+
+    img[src*="CustomIllustration"],
+    img[src*="IXGoHGfuLJL0pyx4GxmNvGltPdbV5USV"] {
+        width: 85px !important;
+        right: -20px !important;
+        top: -80px !important;
+    }
+}
