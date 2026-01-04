@@ -4,12 +4,8 @@
  * 
  * 功能：
  * - 实时计算网站运行时长
- * - 集成不蒜子访客统计
  * - 自动隐藏功能
  * - 性能优化（DOM缓存、定时器控制）
- * 
- * 依赖：
- * - 不蒜子统计脚本（可选）
  * 
  * CDN: https://cdn.jsdelivr.net/gh/zacharylabs/nezha-ui@main/site-uptime.js
  */
@@ -35,6 +31,7 @@
     let elements = null;
     let updateTimer = null;
     let hasWarned = false;
+    let startDate = null; // 缓存建站日期
 
     // ==================== 创建 HTML 结构 ====================
     function createUptimeHTML() {
@@ -46,7 +43,7 @@
       <div class="uptime-glass-card">
         ${CONFIG.DISPLAY.showIcon ? '<span class="uptime-icon">⏱</span>' : ''}
         <div class="uptime-content">
-          <span class="uptime-label">已运行</span>
+          <span class="uptime-label">本站已运行</span>
           <div class="uptime-time">
             <span class="time-segment">
               <span class="time-value" id="uptime-days">0</span>
@@ -67,9 +64,6 @@
             </span>
             ` : ''}
           </div>
-          <span class="uptime-label" style="margin-left: 8px;">第</span>
-          <span class="time-value" id="busuanzi_value_site_uv" style="min-width: auto;">--</span>
-          <span class="uptime-label">位访客</span>
         </div>
       </div>
     `;
@@ -88,7 +82,6 @@
 
     // ==================== 计算运行时长 ====================
     function calculateUptime() {
-        const startDate = new Date(CONFIG.START_DATE);
         const now = new Date();
         const diff = now - startDate;
 
@@ -172,6 +165,9 @@
             document.addEventListener('DOMContentLoaded', init);
             return;
         }
+
+        // 缓存建站日期
+        startDate = new Date(CONFIG.START_DATE);
 
         const container = createUptimeHTML();
         updateDisplay();
