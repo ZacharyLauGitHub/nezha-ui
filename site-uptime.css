@@ -38,6 +38,7 @@
             rgba(255, 255, 255, 0.2) 100%);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
+    -moz-backdrop-filter: blur(5px);
 
     /* 边框和阴影 */
     border: 1px solid rgba(255, 255, 255, 0.5);
@@ -171,6 +172,7 @@ html.dark .uptime-glass-card {
             rgba(0, 0, 0, 0.1) 100%);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
+    -moz-backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.12);
     box-shadow:
         0 8px 32px rgba(0, 0, 0, 0.35),
