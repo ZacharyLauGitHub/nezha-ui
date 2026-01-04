@@ -47,16 +47,8 @@
         }
     });
 
-    // === 路由变化监听（SPA 支持）===
+    // 路由变化检测（用于 SPA 支持，与主 Observer 合并）
     let lastUrl = location.href;
-    const routeObserver = new MutationObserver(() => {
-        if (location.href !== lastUrl) {
-            lastUrl = location.href;
-            // 路由变化后快速重新处理
-            setTimeout(() => processVPS(true), 30);
-        }
-    });
-    routeObserver.observe(document.body, { childList: true, subtree: true });
 
     // === CSS 自动注入 ===
     const CSS_STYLES = `
@@ -277,14 +269,6 @@ html.dark .vps-tooltip,
         }
     }, true);
 
-    // === 防抖函数（优化性能）===
-    function debounce(func, wait) {
-        let timeout;
-        return function (...args) {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => func(...args), wait);
-        };
-    }
 
     // === 配置 ===
     const CONFIG = {
@@ -424,6 +408,9 @@ html.dark .vps-tooltip,
         const cleanValueStr = valueStr.replace(/,/g, '');
         const value = parseFloat(cleanValueStr);
 
+        // NaN 检查
+        if (isNaN(value) || value <= 0) return null;
+
         return {
             value,
             symbol,
@@ -496,24 +483,21 @@ html.dark .vps-tooltip,
             `📅 <strong>到期:</strong> ${expiryStr}`;
     }
 
-    // === 初始化和观察（优化：快速启动）===
+    // === 初始化和观察（优化：快速响应）===
     setTimeout(processVPS, 50);
 
     if (typeof MutationObserver !== 'undefined') {
-        // 尝试找到更精确的服务器列表容器
-        const serverList = document.querySelector('.server-overview, .server-list, [class*="server-info"]');
-        const targetContainer = serverList || document.body;
+        new MutationObserver(() => {
+            // 路由变化检测（合并到主 Observer）
+            if (location.href !== lastUrl) {
+                lastUrl = location.href;
+                setTimeout(() => processVPS(true), 30);
+            } else {
+                setTimeout(processVPS, 100);
+            }
+        }).observe(document.body, { childList: true, subtree: true });
 
-        // 使用防抖优化性能（减少延迟）
-        const debouncedProcess = debounce(processVPS, 80);
-
-        new MutationObserver(() => debouncedProcess())
-            .observe(targetContainer, {
-                childList: true,
-                subtree: serverList ? false : true  // 如果找到精确容器，只监听直接子节点
-            });
-
-        console.log(`[VPS Calculator] ✓ 已加载 | 监听容器: ${targetContainer.className || 'body'}`);
+        console.log('[VPS Calculator] ✓ 已加载');
     }
 
     // === 全局API ===
